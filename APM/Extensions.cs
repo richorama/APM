@@ -1,4 +1,7 @@
 ﻿using System.IO;
+using Microsoft.Win32;
+using System.Linq;
+using System;
 
 namespace Two10.APM
 {
@@ -39,6 +42,29 @@ namespace Two10.APM
             }
 
             Directory.Delete(target_dir, false);
+        }
+
+        public static string GetSDKPath()
+        { 
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\
+
+            var key = Registry.LocalMachine
+                .OpenSubKey("SOFTWARE")
+                .OpenSubKey("Microsoft")
+                .OpenSubKey("Microsoft SDKs")
+                .OpenSubKey("ServiceHosting");
+            var sdkVersion = key.GetSubKeyNames().OrderByDescending(x => x).FirstOrDefault(); // i.e. v1.6
+            if (null == sdkVersion)
+            {
+                throw new ApplicationException("SDK cannot be located");
+            }
+            var path = (string)key.OpenSubKey(sdkVersion).GetValue("InstallPath");
+            path = Path.Combine(path, "bin", "plugins");
+            if (!Directory.Exists(path))
+            {
+                throw new ApplicationException("Cannot find plugins folder: " + path);
+            }
+            return path;
         }
 
     }

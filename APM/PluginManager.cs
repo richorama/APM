@@ -103,7 +103,7 @@ namespace Two10.APM
         {
             var info = new ProcessStartInfo
             {
-                WorkingDirectory = @"D:\git\APM\APM\",
+                //WorkingDirectory = @"D:\git\APM\APM\",
                 Arguments = string.Format("x -y -o\"{0}\" \"{1}\"", destinationFolder, zipFile),
                 FileName = "7za.exe",
                 WindowStyle = ProcessWindowStyle.Hidden,

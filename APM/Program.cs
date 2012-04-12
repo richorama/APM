@@ -4,8 +4,7 @@ namespace Two10.APM
 {
     class Program
     {
-        const string SDK_PATH = @"C:\Program Files\Windows Azure SDK\v1.6\bin\plugins";
-
+        
         static void Main(string[] args)
         {
             if (args.Length == 0)
@@ -30,8 +29,8 @@ The application must be run under elevation to modify the local plugins
 
             try
             {
-
-                var manager = new PluginManager(SDK_PATH, "richorama", "AzurePluginLibrary", "plugins");
+                var sdkPath = Extensions.GetSDKPath();
+                var manager = new PluginManager(sdkPath, "richorama", "AzurePluginLibrary", "plugins");
 
                 switch (args[0].ToLower())
                 {
