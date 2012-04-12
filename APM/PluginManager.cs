@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 
 namespace Two10.APM
 {
@@ -43,6 +44,17 @@ namespace Two10.APM
             {
                 GithubApi.GetFile(githubUser, githubRepo, githubPath, filename, tempfilename);
                 UnZip(tempfilename, Path.Combine(this.pluginFolder, name));
+                using (new Colour(ConsoleColor.Green))
+                {
+                    Console.WriteLine("Installed " + name);
+                }
+            }
+            catch (WebException)
+            {
+                using (new Colour(ConsoleColor.Red))
+                {
+                    Console.WriteLine("Plugin does not exist in library: " + name);
+                }
             }
             catch (Exception ex)
             {
@@ -60,7 +72,17 @@ namespace Two10.APM
             if (Directory.Exists(path))
             {
                 Extensions.DeleteDirectory(Path.Combine(this.pluginFolder, name));
+                using (new Colour(ConsoleColor.Green))
+                {
+                    Console.WriteLine("Removed " + name);
+                }
+                return;
             }
+            using (new Colour(ConsoleColor.Red))
+            {
+                Console.WriteLine("Plugin is not installed: " + name);
+            }
+
         }
 
         public void UpdatePlugin(string name)
@@ -72,6 +94,7 @@ namespace Two10.APM
         {
             foreach (var plugin in ListInstalledPlugins())
             {
+                Console.WriteLine("Updating " + plugin.DisplayName);
                 UpdatePlugin(plugin.DisplayName);
             }
         }
