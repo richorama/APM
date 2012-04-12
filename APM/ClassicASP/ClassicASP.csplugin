@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<RoleModule 
+  xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition"
+  namespace="Microsoft.WindowsAzure.Plugins.ClassicASP">
+  <Startup>
+    <Task commandLine="install.cmd" executionContext="elevated" taskType="simple" />
+  </Startup>
+  <ConfigurationSettings>
+  </ConfigurationSettings>
+  <Endpoints>
+  </Endpoints>
+  <Certificates>
+  </Certificates>
+</RoleModule>
