@@ -35,6 +35,7 @@ namespace APM.Tests
         {
             var summary = new PluginSummary { Name = "Foo.bar" };
             Assert.AreEqual("Foo", summary.DisplayName);
+            Assert.IsNotNullOrEmpty(summary.ToString());
         }
 
     }
