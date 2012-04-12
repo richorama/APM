@@ -4,7 +4,7 @@ namespace Two10.APM
 {
     class Program
     {
-        
+
         static void Main(string[] args)
         {
             if (args.Length == 0)
@@ -22,7 +22,22 @@ apm remove [PluginName]   removes the specified plugin
 apm update [PluginName]   updated the specified plugin
 apm update                updates all plugins
 
-The application must be run under elevation to modify the local plugins
+For example:
+
+apm install ClassicASP
+
+Installed plugins can be included in your ServiceDefinition.csdef file:
+
+<ServiceDefinition>
+  <WorkerRole>
+    <Imports>
+      <Import moduleName=""[PluginName]"" />
+    </Imports>
+  </WorkerRole>
+</ServiceDefinition>
+
+The application must be run under elevation to modify the local plugins.
+The Windows Azure SDK must be installed on the local machine.
 ");
                 return;
             }
