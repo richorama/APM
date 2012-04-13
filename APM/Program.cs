@@ -7,6 +7,8 @@ namespace Two10.APM
 
         static void Main(string[] args)
         {
+
+
             if (args.Length == 0)
             {
                 Console.WriteLine(@"
@@ -36,9 +38,8 @@ Installed plugins can be included in your ServiceDefinition.csdef file:
   </WorkerRole>
 </ServiceDefinition>
 
-The application must be run under elevation to modify the local plugins.
-The Windows Azure SDK must be installed on the local machine.
-");
+APM must be ran elevated to modify the local plugins (as administrator).
+The Windows Azure SDK must be installed on the local machine.");
                 return;
             }
 
@@ -69,12 +70,15 @@ The Windows Azure SDK must be installed on the local machine.
                             using (new Colour(ConsoleColor.Red))
                             {
                                 Console.WriteLine("You must supply the name of the plugin to install");
+                                break;
                             }
                         }
+                        PermissionsWarning();
                         Console.WriteLine("Installing " + args[1]);
                         manager.InstallPlugin(args[1]);
                         break;
                     case "update":
+                        PermissionsWarning();
                         if (args.Length < 2)
                         {
                             Console.WriteLine("Updating all plugins");
@@ -90,8 +94,10 @@ The Windows Azure SDK must be installed on the local machine.
                             using (new Colour(ConsoleColor.Red))
                             {
                                 Console.WriteLine("You must supply the name of the plugin to remove");
+                                break;
                             }
                         }
+                        PermissionsWarning();
                         Console.WriteLine("Removing " + args[1]);
                         manager.RemovePlugin(args[1]);
                         break;
@@ -106,7 +112,16 @@ The Windows Azure SDK must be installed on the local machine.
             }
         }
 
-
+        private static void PermissionsWarning()
+        {
+            if (UacHelper.IsUacEnabled && !UacHelper.IsProcessElevated)
+            {
+                using (new Colour(ConsoleColor.Red))
+                {
+                    Console.WriteLine("APM is not running elevated. This action is likely to fail.");
+                }
+            }
+        }
 
 
 

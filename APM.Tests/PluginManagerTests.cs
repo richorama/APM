@@ -38,5 +38,12 @@ namespace APM.Tests
             Assert.IsNotNullOrEmpty(summary.ToString());
         }
 
+        [Test]
+        public void UACHelper()
+        {
+            Assert.IsTrue(UacHelper.IsUacEnabled);
+            Assert.IsFalse(UacHelper.IsProcessElevated);
+        }
+
     }
 }

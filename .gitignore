@@ -24,3 +24,5 @@ _ReSharper.*
 *.csproj.user
 TestResult.xml
 *.ncrunchsolution
+Output
+*.cache

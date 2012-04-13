@@ -1,0 +1,31 @@
+WARNING
+
+The installer has modified the PATH. This change will not take effect until you log off and on (or restart).
+
+USAGE
+
+From the command prompt type 'APM'.
+
+apm list                  displays a list of plugins available in the library
+apm installed             displays a list of installed plugins
+apm install [PluginName]  installs the specified plugin
+apm remove [PluginName]   removes the specified plugin
+apm update [PluginName]   updated the specified plugin
+apm update                updates all plugins
+
+For example: 
+
+apm install ClassicASP
+
+Installed plugins can be included in your ServiceDefinition.csdef file:
+
+<ServiceDefinition>
+  <WorkerRole>
+    <Imports>
+      <Import moduleName=""[PluginName]"" />
+    </Imports>
+  </WorkerRole>
+</ServiceDefinition>
+
+APM must be ran elevated to modify the local plugins (as administrator).
+The Windows Azure SDK must be installed on the local machine.

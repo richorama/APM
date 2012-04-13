@@ -49,6 +49,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="FileSizeFormatProvider.cs" />
     <Compile Include="GithubApi.cs" />
+    <Compile Include="UacHelper.cs" />
     <Compile Include="Json\JsonFileLinks.cs" />
     <Compile Include="Json\JsonFileSummary.cs" />
     <Compile Include="PluginManager.cs" />
@@ -57,7 +58,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="APM.exe.manifest" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
