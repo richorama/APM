@@ -1,11 +1,11 @@
-﻿using System.IO;
-using Microsoft.Win32;
+﻿using System;
+using System.IO;
 using System.Linq;
-using System;
+using Microsoft.Win32;
 
 namespace Two10.APM
 {
-    static class Extensions
+    public static class Extensions
     {
         public static long Size(this DirectoryInfo d)
         {
@@ -45,7 +45,7 @@ namespace Two10.APM
         }
 
         public static string GetSDKPath()
-        { 
+        {
             // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\
 
             var key = Registry.LocalMachine

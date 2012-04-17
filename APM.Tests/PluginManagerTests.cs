@@ -45,5 +45,13 @@ namespace APM.Tests
             Assert.IsFalse(UacHelper.IsProcessElevated);
         }
 
+
+        [Test]
+        public void PluginInfo()
+        {
+            var manager = new PluginManager(Extensions.GetSDKPath(), "richorama", "AzurePluginLibrary", "plugins");
+            manager.Info("Connect");
+        }
+
     }
 }

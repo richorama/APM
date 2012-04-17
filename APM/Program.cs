@@ -88,6 +88,17 @@ The Windows Azure SDK must be installed on the local machine.");
                         Console.WriteLine("Updating " + args[1]);
                         manager.UpdatePlugin(args[1]);
                         break;
+                    case "info":
+                         if (args.Length < 2)
+                        {
+                            using (new Colour(ConsoleColor.Red))
+                            {
+                                Console.WriteLine("You must supply the name of the plugin");
+                                break;
+                            }
+                        }
+                         manager.Info(args[1]);
+                        break;
                     case "remove":
                         if (args.Length < 2)
                         {
