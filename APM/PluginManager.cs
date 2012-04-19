@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -39,15 +38,19 @@ namespace Two10.APM
 
         public void InstallPlugin(string name)
         {
-            var tempfilename = Path.GetTempFileName();
-            var filename = name + ".zip";
             try
             {
-                GithubApi.GetFile(githubUser, githubRepo, githubPath, filename, tempfilename);
-                UnZip(tempfilename, Path.Combine(this.pluginFolder, name));
-                using (new Colour(ConsoleColor.Green))
+                Directory.CreateDirectory(Path.Combine(this.pluginFolder, name));
+                foreach (var file in GithubApi.GetFileList(githubUser, githubRepo, string.Format("{0}/{1}", githubPath, name)))
                 {
-                    Console.WriteLine("Installed " + name);
+
+                    Console.Write(@"GET {0}/{1}", name, file.Name);
+                    GithubApi.GetFile(githubUser, githubRepo, string.Format("{0}/{1}", githubPath, name), file.Name, Path.Combine(this.pluginFolder, name, file.Name));
+                    using (new Colour(ConsoleColor.Green))
+                    {
+                        Console.WriteLine(" OK");
+                    }
+
                 }
             }
             catch (WebException)
@@ -60,10 +63,6 @@ namespace Two10.APM
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-            }
-            finally
-            {
-                File.Delete(tempfilename);
             }
         }
 
@@ -97,26 +96,6 @@ namespace Two10.APM
             {
                 Console.WriteLine("Updating " + plugin.DisplayName);
                 UpdatePlugin(plugin.DisplayName);
-            }
-        }
-
-        private void UnZip(string zipFile, string destinationFolder)
-        {
-            var info = new ProcessStartInfo
-            {
-                //WorkingDirectory = @"D:\git\APM\APM\",
-                Arguments = string.Format("x -y -o\"{0}\" \"{1}\"", destinationFolder, zipFile),
-                FileName = "7za.exe",
-                WindowStyle = ProcessWindowStyle.Hidden,
-                RedirectStandardOutput = true,
-                UseShellExecute = false
-            };
-            var process = Process.Start(info);
-            process.WaitForExit();
-            if (0 != process.ExitCode)
-            {
-                Console.WriteLine(process.StandardOutput.ReadToEnd());
-                throw new ApplicationException("7zip exited with error code " + process.ExitCode.ToString());
             }
         }
 

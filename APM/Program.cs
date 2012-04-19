@@ -23,6 +23,7 @@ apm install [PluginName]  installs the specified plugin
 apm remove [PluginName]   removes the specified plugin
 apm update [PluginName]   updated the specified plugin
 apm update                updates all plugins
+apm info [PluginName]     displays information about a plugin
 
 For example:
 
@@ -89,7 +90,7 @@ The Windows Azure SDK must be installed on the local machine.");
                         manager.UpdatePlugin(args[1]);
                         break;
                     case "info":
-                         if (args.Length < 2)
+                        if (args.Length < 2)
                         {
                             using (new Colour(ConsoleColor.Red))
                             {
@@ -97,7 +98,7 @@ The Windows Azure SDK must be installed on the local machine.");
                                 break;
                             }
                         }
-                         manager.Info(args[1]);
+                        manager.Info(args[1]);
                         break;
                     case "remove":
                         if (args.Length < 2)
@@ -111,6 +112,13 @@ The Windows Azure SDK must be installed on the local machine.");
                         PermissionsWarning();
                         Console.WriteLine("Removing " + args[1]);
                         manager.RemovePlugin(args[1]);
+                        break;
+                    default:
+                        using (new Colour(ConsoleColor.Red))
+                        {
+                            Console.WriteLine("Command not found: {0}", args[0]);
+                        }
+                        Console.WriteLine("Type APM for help");
                         break;
                 }
             }
