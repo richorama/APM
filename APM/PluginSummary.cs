@@ -18,6 +18,10 @@ namespace Two10.APM
 
         public override string ToString()
         {
+            if (this.Size == 0)
+            {
+                return this.DisplayName;
+            }
             return this.DisplayName.PadRight(50, ' ') + string.Format(new FileSizeFormatProvider(), "{0:fs}", this.Size).PadLeft(7, ' ');
         }
     }

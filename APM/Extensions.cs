@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Win32;
 
 namespace Two10.APM
@@ -65,6 +66,16 @@ namespace Two10.APM
                 throw new ApplicationException("Cannot find plugins folder: " + path);
             }
             return path;
+        }
+
+        public static string ReadAttribute(this XElement value, string name)
+        {
+            var attribute = value.Attribute(XName.Get(name));
+            if (null == attribute)
+            {
+                return "";
+            }
+            return attribute.Value;
         }
 
     }
