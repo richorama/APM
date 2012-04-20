@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Web.Script.Serialization;
 using Two10.APM.Json;
@@ -20,26 +22,40 @@ namespace Two10.APM
 
         public static void GetFile(string user, string repo, string path, string filename, string localfile)
         {
-            Download(string.Format(@"https://raw.github.com/{0}/{1}/master/{2}{3}", user, repo, string.IsNullOrEmpty(path) ? "" : path + @"/", filename), localfile);
+            string uri = string.Format(@"https://raw.github.com/{0}/{1}/master/{2}{3}", user, repo, string.IsNullOrEmpty(path) ? "" : path + @"/", filename);
+            Download(uri, localfile);
+
         }
 
         private static T Get<T>(string url)
         {
             var request = WebRequest.Create(url);
             request.Method = "GET";
+            Console.Write(@"GET {0} ", new Uri(url).Segments.Last());
+            T output;
             using (var response = request.GetResponse())
             {
                 StreamReader sr = new StreamReader(response.GetResponseStream());
                 var jss = new JavaScriptSerializer();
-                return jss.Deserialize<T>(sr.ReadToEnd());
+                output = jss.Deserialize<T>(sr.ReadToEnd());
             }
+            using (new Colour(ConsoleColor.Green))
+            {
+                Console.WriteLine("OK");
+            }
+            return output;
         }
 
         private static void Download(string url, string filename)
         {
+            Console.Write(@"GET {0} ", new Uri(url).Segments.Last());
             using (var client = new WebClient())
             {
                 client.DownloadFile(url, filename);
+            }
+            using (new Colour(ConsoleColor.Green))
+            {
+                Console.WriteLine("OK");
             }
         }
 

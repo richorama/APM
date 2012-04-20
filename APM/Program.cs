@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Two10.APM
 {
@@ -52,14 +53,18 @@ The Windows Azure SDK must be installed on the local machine.");
                 switch (args[0].ToLower())
                 {
                     case "list":
+                        var plugins = manager.ListAvailablePlugins().ToArray();
+                        Console.WriteLine();
                         Console.WriteLine("Available plugins:");
-                        foreach (var plugin in manager.ListAvailablePlugins())
+                        Console.WriteLine();
+                        foreach (var plugin in plugins)
                         {
                             Console.WriteLine(plugin);
                         }
                         break;
                     case "installed":
                         Console.WriteLine("Installed plugins:");
+                        Console.WriteLine();
                         foreach (var plugin in manager.ListInstalledPlugins())
                         {
                             Console.WriteLine(plugin);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 
 namespace Two10.APM
 {
@@ -44,14 +45,12 @@ namespace Two10.APM
                 Directory.CreateDirectory(Path.Combine(this.pluginFolder, name));
                 foreach (var file in GithubApi.GetFileList(githubUser, githubRepo, string.Format("{0}/{1}", githubPath, name)))
                 {
-
-                    Console.Write(@"GET {0}/{1}", name, file.Name);
-                    GithubApi.GetFile(githubUser, githubRepo, string.Format("{0}/{1}", githubPath, name), file.Name, Path.Combine(this.pluginFolder, name, file.Name));
-                    using (new Colour(ConsoleColor.Green))
-                    {
-                        Console.WriteLine(" OK");
-                    }
-
+                    GithubApi.GetFile(
+                        githubUser,
+                        githubRepo,
+                        string.Format("{0}/{1}", githubPath, name),
+                        file.Name,
+                        Path.Combine(this.pluginFolder, name, HttpUtility.UrlDecode(file.Name)));
                 }
                 using (new Colour(ConsoleColor.Green))
                 {
