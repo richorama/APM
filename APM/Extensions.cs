@@ -48,24 +48,32 @@ namespace Two10.APM
         public static string GetSDKPath()
         {
             // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\
+            try
+            {
+                var key = Registry.LocalMachine
+                    .OpenSubKey("SOFTWARE")
+                    .OpenSubKey("Microsoft")
+                    .OpenSubKey("Microsoft SDKs")
+                    .OpenSubKey("ServiceHosting");
+                var sdkVersion = key.GetSubKeyNames().OrderByDescending(x => x).FirstOrDefault(); // i.e. v1.6
 
-            var key = Registry.LocalMachine
-                .OpenSubKey("SOFTWARE")
-                .OpenSubKey("Microsoft")
-                .OpenSubKey("Microsoft SDKs")
-                .OpenSubKey("ServiceHosting");
-            var sdkVersion = key.GetSubKeyNames().OrderByDescending(x => x).FirstOrDefault(); // i.e. v1.6
-            if (null == sdkVersion)
+                if (null == sdkVersion)
+                {
+                    throw new NullReferenceException();
+                }
+
+                var path = (string)key.OpenSubKey(sdkVersion).GetValue("InstallPath");
+                path = Path.Combine(path, "bin", "plugins");
+                if (!Directory.Exists(path))
+                {
+                    throw new ApplicationException("Cannot find plugins folder: " + path);
+                }
+                return path;
+            }
+            catch
             {
                 throw new ApplicationException("SDK cannot be located");
             }
-            var path = (string)key.OpenSubKey(sdkVersion).GetValue("InstallPath");
-            path = Path.Combine(path, "bin", "plugins");
-            if (!Directory.Exists(path))
-            {
-                throw new ApplicationException("Cannot find plugins folder: " + path);
-            }
-            return path;
         }
 
         public static string ReadAttribute(this XElement value, string name)

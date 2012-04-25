@@ -53,5 +53,22 @@ namespace APM.Tests
             manager.Info("Connect");
         }
 
+        [Test]
+        public void GetSetting()
+        {
+            var value = Program.GetSwitch(new string[] { "-r", "repositoryName" }, "-r");
+            Assert.AreEqual("repositoryName", value);
+
+            value = Program.GetSwitch(new string[] { "-u", "bar", "-r" }, "-r");
+            Assert.IsNull(value);
+
+            value = Program.GetSwitch(new string[] { "-R", "repositoryName" }, "-r");
+            Assert.AreEqual("repositoryName", value);
+
+            value = Program.GetSwitch(new string[] { "-R", "repositoryName" }, "-p");
+            Assert.IsNull(value);
+
+        }
+
     }
 }

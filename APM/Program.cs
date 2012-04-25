@@ -1,15 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Two10.APM
 {
-    class Program
+    public class Program
     {
 
         static void Main(string[] args)
         {
-
-
             if (args.Length == 0)
             {
                 Console.WriteLine(@"
@@ -18,17 +17,27 @@ Richard Astbury Two10Degrees.com
 
 Usage:
 
-apm list                  displays a list of plugins available in the library
-apm installed             displays a list of installed plugins
-apm install [PluginName]  installs the specified plugin
-apm remove [PluginName]   removes the specified plugin
-apm update [PluginName]   updated the specified plugin
-apm update                updates all plugins
-apm info [PluginName]     displays information about a plugin
+apm list                  Displays a list of plugins available in the library
+apm installed             Displays a list of installed plugins
+apm install [PluginName]  Installs the specified plugin
+apm remove [PluginName]   Removes the specified plugin
+apm update [PluginName]   Updated the specified plugin
+apm update                Updates all plugins
+apm info [PluginName]     Displays information about a plugin
 
 For example:
 
-apm install ClassicASP
+> apm install ClassicASP
+
+Additional options:
+
+-u [username]             GitHub username containing plugins (i.e. richorama)
+-r [repository]           GitHub respository (i.e. AzurePluginLibrary)
+-p [path]                 Repository path containing plugins (i.e. plugins)
+
+For example:
+
+> apm install ClassicASP -u richorama -r AzurePluginLibrary -p plugins
 
 Installed plugins can be included in your ServiceDefinition.csdef file:
 
@@ -48,7 +57,11 @@ The Windows Azure SDK must be installed on the local machine.");
             try
             {
                 var sdkPath = Extensions.GetSDKPath();
-                var manager = new PluginManager(sdkPath, "richorama", "AzurePluginLibrary", "plugins");
+                var user = GetSwitch(args, "-u") ?? "richorama";
+                var respository = GetSwitch(args, "-r") ?? "AzurePluginLibrary";
+                var path = GetSwitch(args, "-p") ?? "plugins";
+
+                var manager = new PluginManager(sdkPath, user, respository, path);
 
                 switch (args[0].ToLower())
                 {
@@ -145,6 +158,24 @@ The Windows Azure SDK must be installed on the local machine.");
                     Console.WriteLine("APM is not running elevated. This action is likely to fail.");
                 }
             }
+        }
+
+        public static string GetSwitch(string[] args, string name)
+        {
+            if (null == args) throw new ArgumentNullException("args");
+            if (null == name) throw new ArgumentNullException("name");
+
+            var argsList = new List<string>(args.Select(x => x.ToLower()));
+            var index = argsList.IndexOf(name.ToLower());
+            if (index == -1)
+            {
+                return null;
+            }
+            if (args.Length < index + 2)
+            {
+                return null;
+            }
+            return args[index + 1];
         }
 
 
