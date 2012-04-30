@@ -31,7 +31,7 @@ namespace Two10.APM
         {
             var request = WebRequest.Create(url);
             request.Method = "GET";
-            Console.Write(@"GET {0} ", new Uri(url).Segments.Last());
+            Console.WriteLine(@"GET {0} ", new Uri(url).Segments.Last());
             T output;
             using (var response = request.GetResponse())
             {
@@ -39,24 +39,25 @@ namespace Two10.APM
                 var jss = new JavaScriptSerializer();
                 output = jss.Deserialize<T>(sr.ReadToEnd());
             }
-            using (new Colour(ConsoleColor.Green))
-            {
-                Console.WriteLine("OK");
-            }
+            //using (new Colour(ConsoleColor.Green))
+            //{
+            //    Console.WriteLine("OK");
+            //}
             return output;
         }
 
         private static void Download(string url, string filename)
         {
-            Console.Write(@"GET {0} ", new Uri(url).Segments.Last());
+            Console.WriteLine(@"GET {0} ", new Uri(url).Segments.Last());
             using (var client = new WebClient())
             {
                 client.DownloadFile(url, filename);
             }
+            /*
             using (new Colour(ConsoleColor.Green))
             {
                 Console.WriteLine("OK");
-            }
+            }*/
         }
 
     }
