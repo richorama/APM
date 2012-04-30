@@ -24,7 +24,7 @@ namespace Two10.APM
 
         public IEnumerable<PluginSummary> ListAvailablePlugins()
         {
-            return GithubApi.GetFileList(this.githubUser, this.githubRepo, this.githubPath).OrderBy(x => x.Name);
+            return GithubApi.GetFileList(this.githubUser, this.githubRepo, this.githubPath, "dir").OrderBy(x => x.Name);
         }
 
         public IEnumerable<PluginSummary> ListInstalledPlugins()
@@ -36,6 +36,25 @@ namespace Two10.APM
             }
         }
 
+        private void DownloadDirectory(string localPath, string githubPath)
+        {
+            Directory.CreateDirectory(Path.Combine(localPath));
+            foreach (var file in GithubApi.GetFileList(githubUser, githubRepo, githubPath, "file"))
+            {
+                GithubApi.GetFile(
+                    githubUser,
+                    githubRepo,
+                    githubPath,
+                    file.Name,
+                    Path.Combine(localPath, HttpUtility.UrlDecode(file.Name)));
+            }
+            foreach (var dir in GithubApi.GetFileList(githubUser, githubRepo, githubPath, "dir"))
+            {
+                DownloadDirectory(Path.Combine(localPath, dir.Name), string.Format("{0}/{1}", githubPath, dir.Name));
+            }
+
+        }
+
         public void InstallPlugin(string name)
         {
             bool dirExists = Directory.Exists(Path.Combine(this.pluginFolder, name));
@@ -43,7 +62,9 @@ namespace Two10.APM
             try
             {
                 Directory.CreateDirectory(Path.Combine(this.pluginFolder, name));
-                foreach (var file in GithubApi.GetFileList(githubUser, githubRepo, string.Format("{0}/{1}", githubPath, name)))
+                DownloadDirectory(Path.Combine(this.pluginFolder, name), string.Format(@"{0}/{1}", githubPath, name));
+                /*
+                foreach (var file in GithubApi.GetFileList(githubUser, githubRepo, string.Format("{0}/{1}", githubPath, name), "file"))
                 {
                     GithubApi.GetFile(
                         githubUser,
@@ -51,7 +72,7 @@ namespace Two10.APM
                         string.Format("{0}/{1}", githubPath, name),
                         file.Name,
                         Path.Combine(this.pluginFolder, name, HttpUtility.UrlDecode(file.Name)));
-                }
+                }*/
                 using (new Colour(ConsoleColor.Green))
                 {
                     Console.WriteLine("Installed {0}", name);

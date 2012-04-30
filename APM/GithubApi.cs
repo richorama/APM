@@ -11,10 +11,10 @@ namespace Two10.APM
     static class GithubApi
     {
 
-        public static IEnumerable<PluginSummary> GetFileList(string user, string repo, string path)
+        public static IEnumerable<PluginSummary> GetFileList(string user, string repo, string path, string type)
         {
             var list = Get<JsonFileSummary[]>(string.Format("https://api.github.com/repos/{0}/{1}/contents/{2}", user, repo, path));
-            foreach (var file in list)
+            foreach (var file in list.Where(x => x.type == type))
             {
                 yield return new PluginSummary { Name = file.name, Size = file.size };
             }
