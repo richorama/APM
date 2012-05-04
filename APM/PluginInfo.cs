@@ -96,6 +96,11 @@ namespace Two10.APM
             }
         }
 
+        private static IEnumerable<string> GetFiles(string path)
+        {
+            return Directory.EnumerateFiles(path).Select(x => Path.GetFileName(x));
+        }
+
         private static IEnumerable<string> GetDocumentation(string path)
         {
             if (!File.Exists(path))
@@ -129,6 +134,7 @@ namespace Two10.APM
             DisplayList("Endpoints", GetEndpoints(xDoc));
             DisplayList("Certificates", GetCertificates(xDoc));
             DisplayList("Documentation", GetDocumentation(readmePath));
+            DisplayList("Files", GetFiles(Path.GetDirectoryName(csPluginPath)));
         }
 
 

@@ -65,6 +65,7 @@ The Windows Azure SDK must be installed on the local machine.");
 
                 switch (args[0].ToLower())
                 {
+                    case "ls":
                     case "list":
                         var plugins = manager.ListAvailablePlugins().ToArray();
                         Console.WriteLine();
@@ -83,6 +84,7 @@ The Windows Azure SDK must be installed on the local machine.");
                             Console.WriteLine(plugin);
                         }
                         break;
+                    case "get":
                     case "install":
                         if (args.Length < 2)
                         {
@@ -107,6 +109,8 @@ The Windows Azure SDK must be installed on the local machine.");
                         Console.WriteLine("Updating " + args[1]);
                         manager.UpdatePlugin(args[1]);
                         break;
+                    case "?":
+                    case "help":
                     case "info":
                         if (args.Length < 2)
                         {
@@ -118,6 +122,8 @@ The Windows Azure SDK must be installed on the local machine.");
                         }
                         manager.Info(args[1]);
                         break;
+                    case "delete":
+                    case "del":
                     case "remove":
                         if (args.Length < 2)
                         {
