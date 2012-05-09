@@ -133,8 +133,8 @@ namespace Two10.APM
             DisplayList("Settings", GetSettings(xDoc));
             DisplayList("Endpoints", GetEndpoints(xDoc));
             DisplayList("Certificates", GetCertificates(xDoc));
-            DisplayList("Documentation", GetDocumentation(readmePath));
             DisplayList("Files", GetFiles(Path.GetDirectoryName(csPluginPath)));
+            DisplayList("Documentation", GetDocumentation(readmePath));
         }
 
 
