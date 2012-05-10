@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Two10.APM
 {
@@ -41,15 +41,24 @@ namespace Two10.APM
         {
             Directory.CreateDirectory(Path.Combine(localPath));
             //foreach(var file in GithubApi.GetFileList(githubUser, githubRepo, githubPath, "file"))
-            Parallel.ForEach<PluginSummary>(GithubApi.GetFileList(githubUser, githubRepo, githubPath, "file"), file => { 
+            Parallel.ForEach<PluginSummary>(GithubApi.GetFileList(githubUser, githubRepo, githubPath, "file"), file =>
+            {
                 //{
+                try
+                {
                     GithubApi.GetFile(
                         githubUser,
                         githubRepo,
                         githubPath,
                         file.Name,
                         Path.Combine(localPath, HttpUtility.UrlDecode(file.Name)));
-                });
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Failed");
+                }
+            });
+
             //}
             foreach (var dir in GithubApi.GetFileList(githubUser, githubRepo, githubPath, "dir"))
             {
@@ -81,18 +90,20 @@ namespace Two10.APM
                     Console.WriteLine("Installed {0}", name);
                 }
             }
-            catch (WebException)
-            {
-                error = true;
-                using (new Colour(ConsoleColor.Red))
-                {
-                    Console.WriteLine("Plugin does not exist in library: " + name);
-                }
-            }
             catch (Exception ex)
             {
                 error = true;
-                Console.WriteLine(ex.ToString());
+                if (ex.InnerException != null && ex.InnerException is WebException)
+                {
+                    using (new Colour(ConsoleColor.Red))
+                    {
+                        Console.WriteLine("Failed to retrieve plugin: " + name);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(ex.ToString());
+                }
             }
             finally
             {
