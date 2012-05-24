@@ -40,26 +40,16 @@ namespace Two10.APM
         private void DownloadDirectory(string localPath, string githubPath)
         {
             Directory.CreateDirectory(Path.Combine(localPath));
-            //foreach(var file in GithubApi.GetFileList(githubUser, githubRepo, githubPath, "file"))
             Parallel.ForEach<PluginSummary>(GithubApi.GetFileList(githubUser, githubRepo, githubPath, "file"), file =>
             {
-                //{
-                try
-                {
-                    GithubApi.GetFile(
-                        githubUser,
-                        githubRepo,
-                        githubPath,
-                        file.Name,
-                        Path.Combine(localPath, HttpUtility.UrlDecode(file.Name)));
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Failed");
-                }
+                GithubApi.GetFile(
+                    githubUser,
+                    githubRepo,
+                    githubPath,
+                    file.Name,
+                    Path.Combine(localPath, HttpUtility.UrlDecode(file.Name)));
             });
 
-            //}
             foreach (var dir in GithubApi.GetFileList(githubUser, githubRepo, githubPath, "dir"))
             {
                 DownloadDirectory(Path.Combine(localPath, dir.Name), string.Format("{0}/{1}", githubPath, dir.Name));
