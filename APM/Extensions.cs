@@ -45,7 +45,7 @@ namespace Two10.APM
             Directory.Delete(target_dir, false);
         }
 
-        public static string GetSDKPath()
+        public static string GetSDKPath(string sdkVersion = null)
         {
             // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\ServiceHosting\
             try
@@ -55,11 +55,24 @@ namespace Two10.APM
                     .OpenSubKey("Microsoft")
                     .OpenSubKey("Microsoft SDKs")
                     .OpenSubKey("ServiceHosting");
-                var sdkVersion = key.GetSubKeyNames().OrderByDescending(x => x).FirstOrDefault(); // i.e. v1.6
+
+
+
+                if (string.IsNullOrWhiteSpace(sdkVersion))
+                {
+                    sdkVersion = key.GetSubKeyNames().OrderByDescending(x => x).FirstOrDefault(); // i.e. v1.6
+                }
+                else
+                {
+                    if (!sdkVersion.ToLower().StartsWith("v"))
+                    {
+                        sdkVersion = "v" + sdkVersion;
+                    }
+                }
 
                 if (null == sdkVersion)
                 {
-                    throw new NullReferenceException();
+                    throw new NullReferenceException("Cannot find an SDK in the registry");
                 }
 
                 var path = (string)key.OpenSubKey(sdkVersion).GetValue("InstallPath");

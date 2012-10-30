@@ -7,7 +7,7 @@ namespace APM.Tests
     [TestFixture]
     public class PluginManagerTests
     {
-        [Test]
+        [Test, Explicit]
         public void TestRepoQuery()
         {
             var manager = new PluginManager("", "richorama", "AzurePluginLibrary", "plugins");
@@ -67,6 +67,25 @@ namespace APM.Tests
 
             value = Program.GetSwitch(new string[] { "-R", "repositoryName" }, "-p");
             Assert.IsNull(value);
+
+            value = Program.GetSwitch(new string[] { "-V", "sdkversion" }, "-v");
+            Assert.AreEqual("sdkversion", value);
+        }
+
+        [Test]
+        public void GetSDKVersion()
+        {
+            var path = Extensions.GetSDKPath();
+            Assert.IsNotNullOrEmpty(path);
+
+            path = Extensions.GetSDKPath("1.6");
+            Assert.IsNotNullOrEmpty(path);
+
+            path = Extensions.GetSDKPath("v1.7");
+            Assert.IsNotNullOrEmpty(path);
+
+            path = Extensions.GetSDKPath("V1.7");
+            Assert.IsNotNullOrEmpty(path);
 
         }
 

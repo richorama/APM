@@ -19,7 +19,7 @@ Usage:
 
 apm list                  Displays a list of plugins available in the library
 apm installed             Displays a list of installed plugins
-apm install [PluginName]  Installs the specified plugin
+apm install [PluginName]  Installs the specified plugin (case sensitive)
 apm remove [PluginName]   Removes the specified plugin
 apm update [PluginName]   Updated the specified plugin
 apm update                Updates all plugins
@@ -34,6 +34,7 @@ Additional options:
 -u [username]             GitHub username containing plugins (i.e. richorama)
 -r [repository]           GitHub respository (i.e. AzurePluginLibrary)
 -p [path]                 Repository path containing plugins (i.e. plugins)
+-v [version]              The SDK version you wish to work with (i.e. 1.7)
 
 For example:
 
@@ -56,11 +57,12 @@ The Windows Azure SDK must be installed on the local machine.");
 
             try
             {
-                var sdkPath = Extensions.GetSDKPath();
                 var user = GetSwitch(args, "-u") ?? "richorama";
                 var respository = GetSwitch(args, "-r") ?? "AzurePluginLibrary";
                 var path = GetSwitch(args, "-p") ?? "plugins";
+                var sdkVersion = GetSwitch(args, "-v") ?? "";
 
+                var sdkPath = Extensions.GetSDKPath(sdkVersion);
                 var manager = new PluginManager(sdkPath, user, respository, path);
 
                 switch (args[0].ToLower())
