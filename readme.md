@@ -31,3 +31,8 @@ Installed plugins can be included in your ServiceDefinition.csdef file:
 
 APM must be run under elevation to modify the local plugins.
 The Windows Azure SDK must be installed on the local machine.
+
+Download the Installer
+----------------------
+
+[http://two10degrees.blob.core.windows.net/apm/setup.exe](http://two10degrees.blob.core.windows.net/apm/setup.exe)
