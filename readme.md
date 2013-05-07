@@ -1,5 +1,8 @@
 AZURE PLUGIN MANAGER 
 ====================
+
+Command line tool to work with [http://richorama.github.io/AzurePluginLibrary/](Azure Plugin Library).
+
 (c) 2012 Richard Astbury Two10Degrees.com
 
 Usage
