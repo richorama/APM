@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Xml.Linq;
 using Microsoft.Win32;
 
@@ -24,6 +26,18 @@ namespace Two10.APM
                 total += Size(di);
             }
             return (total);
+        }
+
+        public static void SetUserAgent(this WebHeaderCollection headers)
+        {
+            headers
+                .GetType()
+                .GetMethod("AddWithoutValidate", BindingFlags.NonPublic | BindingFlags.Instance)
+                .Invoke(headers, new object[]
+                {
+                    "User-Agent",
+                    "AzurePluginManager"
+                });
         }
 
         public static void DeleteDirectory(string target_dir)

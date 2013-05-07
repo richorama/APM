@@ -30,19 +30,17 @@ namespace Two10.APM
         private static T Get<T>(string url)
         {
             var request = WebRequest.Create(url);
+            request.Headers.SetUserAgent();
             request.Method = "GET";
             Console.WriteLine(@"GET {0} ", new Uri(url).Segments.Last());
             T output;
             using (var response = request.GetResponse())
             {
-                StreamReader sr = new StreamReader(response.GetResponseStream());
+                var sr = new StreamReader(response.GetResponseStream());
                 var jss = new JavaScriptSerializer();
                 output = jss.Deserialize<T>(sr.ReadToEnd());
             }
-            //using (new Colour(ConsoleColor.Green))
-            //{
-            //    Console.WriteLine("OK");
-            //}
+
             return output;
         }
 
@@ -51,13 +49,10 @@ namespace Two10.APM
             Console.WriteLine(@"GET {0} ", new Uri(url).Segments.Last());
             using (var client = new WebClient())
             {
+                client.Headers.SetUserAgent();
                 client.DownloadFile(url, filename);
             }
-            /*
-            using (new Colour(ConsoleColor.Green))
-            {
-                Console.WriteLine("OK");
-            }*/
+
         }
 
     }

@@ -143,7 +143,7 @@ namespace Two10.APM
         {
             Console.WriteLine("{0}:", name);
 
-            if (items.Count() == 0)
+            if (!items.Any())
             {
                 Console.WriteLine("  No {0}", name.ToLower());
                 return;
