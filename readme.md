@@ -39,3 +39,20 @@ Download the Installer
 ----------------------
 
 [http://two10degrees.blob.core.windows.net/apm/setup.exe](http://two10degrees.blob.core.windows.net/apm/setup.exe)
+
+Install using Scoop
+-------------------
+
+Install Scoop, using the instructions on the website: [http://scoop.sh/](http://scoop.sh/)
+
+Register this repository as a Scoop bucket:
+
+```
+scoop bucket add apm https://github.com/richorama/APM.git
+```
+
+Install APM:
+
+```
+scoop install apm
+```
