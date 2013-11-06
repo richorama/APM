@@ -40,7 +40,7 @@ Download the Installer
 
 [http://two10degrees.blob.core.windows.net/apm/setup.exe](http://two10degrees.blob.core.windows.net/apm/setup.exe)
 
-Install using Scoop
+Install with Scoop
 -------------------
 
 Install Scoop, using the instructions on the website: [http://scoop.sh/](http://scoop.sh/)
