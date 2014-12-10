@@ -1,6 +1,8 @@
 AZURE PLUGIN MANAGER 
 ====================
 
+[![](https://api.travis-ci.org/richorama/APM.svg)](https://travis-ci.org/richorama/APM/builds#)
+
 Command line tool to work with the [Azure Plugin Library](http://richorama.github.io/AzurePluginLibrary/).
 
 (c) 2012 Richard Astbury Two10Degrees.com
