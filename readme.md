@@ -58,3 +58,8 @@ Install APM:
 ```
 scoop install apm
 ```
+
+License
+-------
+
+MIT
